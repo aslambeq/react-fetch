@@ -1,5 +1,3 @@
-import { useEffect } from 'react'
-import { fetchPokemon, postPokemon } from '../api'
 import useFetch from '../hooks/useFetch'
 import { fetchPokemonQuery, postPokemonQuery } from '../queries'
 

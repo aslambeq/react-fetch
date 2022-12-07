@@ -15,9 +15,15 @@ function App() {
       {customDisplayed ? <Custom /> : null}
       {reactQueryDisplayed ? <ReactQuery /> : null}
 
-      <button onClick={() => setCustomNewDisplayed(prev => !prev)}>toggle custom-new</button>
-      <button onClick={() => setCustomDisplayed(prev => !prev)}>toggle custom</button>
-      <button onClick={() => setReactQueryDisplayed(prev => !prev)}>toggle react-query</button>
+      <button onClick={() => setCustomNewDisplayed((prev) => !prev)}>
+        toggle custom-new
+      </button>
+      <button onClick={() => setCustomDisplayed((prev) => !prev)}>
+        toggle custom
+      </button>
+      <button onClick={() => setReactQueryDisplayed((prev) => !prev)}>
+        toggle react-query
+      </button>
     </div>
   )
 }
