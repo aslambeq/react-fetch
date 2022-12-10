@@ -3,31 +3,58 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { fetch } from 'lib/fetch';
 
 /**
+ * @typedef {Object} Response
+ * @property {boolean} success
+ * @property {any} [data]
+ * @property {string} [error]
+ * @property {boolean} [isAborted]
+ */
+
+/**
+ * @typedef {Object} Result
+ * @property {boolean} success
+ * @property {any} [data]
+ * @property {string} [error]
+ * @property {string | number} [errorCode]
+ */
+
+/**
+ * @typedef {function(Response.data): Result} ResponseHandler
+ */
+
+/**
+ * @callback ResultSuccessHandler
+ * @param {any} data данные
+ * @returns {void}
+ */
+
+/**
+ * @callback ResultErrorHandler
+ * @param {Result} result
+ * @returns {void}
+ */
+
+/**
  * @typedef {Object} useFetchProps
  * @property  {{
  *  method: 'get' | 'post' | 'put' | 'delete',
  *  url: string,
- *  data?: object,
+ *  data?: any,
  *  headers?: object,
- *  auth?: { username: string, password: string
- * }}} query
+ *  auth?: { username: string, password: string }
+ * }} query
  * @property  {boolean} init
- * @property  {(data) => {}} onResponse обработка ответа
- * @property  {(data) => {}} onSuccess обработка данных после успешного onResponse
+ * @property  {ResponseHandler} onResponse обработка ответа
+ * @property  {ResultSuccessHandler} onSuccess обработка данных после успешного onResponse
  * - вызывается только если передан onReponse
- * @property  {(err) => {}} onError обработка ошибки
+ * @property  {ResultErrorHandler} onError обработка ошибки
  */
 
-// isFetching,
-// data,
-// response,
-// error,
-// isError,
 /**
  * @typedef {Object} useFetchReturn
  * @property {Function} fetch
  * @property {boolean} isFetching
- * @property {any} response ответ после fetch
+ * @property {Response} response ответ после fetch
  * @property {any} data ответ после onSuccess
  * - вызывается только если передан onSuccess
  * @property {string} error
@@ -79,11 +106,11 @@ const useFetch = ({ query, init, onResponse, onSuccess, onError }) => {
         const err = result.error || 'Ошика выполнения запроса';
         setIsError(true);
         setError(err);
-        if (onError) onError(err);
+        if (onError) onError(result);
       } else {
         setIsError(false);
-        setData(result);
-        if (onSuccess) onSuccess(result);
+        setData(result.data);
+        if (onSuccess) onSuccess(result.data);
       }
     }
 
